@@ -1,0 +1,159 @@
+.sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  background: var(--paper-100, #F4F3EE);
+  border-left: 1px solid var(--paper-300, #E8E6DD);
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px;
+  gap: 18px;
+  overflow-y: auto;
+  font-family: var(--font-plex-sans, "IBM Plex Sans"), system-ui, sans-serif;
+}
+.sidebar__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--paper-300, #E8E6DD);
+}
+.sidebar__title {
+  font-family: var(--font-plex-mono, ui-monospace, monospace);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-500, #5C5C58);
+}
+.sidebar__bell {
+  background: transparent;
+  border: 1px solid var(--paper-300, #E8E6DD);
+  border-radius: 999px;
+  padding: 4px 6px;
+  cursor: pointer;
+  color: var(--ink-500, #5C5C58);
+  transition: color 120ms, border-color 120ms;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar__bell:hover { color: var(--ink-900, #141413); border-color: var(--paper-400, #D7D7D5); }
+
+.sidebar__section { display: flex; flex-direction: column; gap: 8px; }
+.sidebar__section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0 2px;
+  font-family: var(--font-plex-mono, ui-monospace, monospace);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-500, #5C5C58);
+}
+.sidebar__count {
+  font-variant-numeric: tabular-nums;
+  background: var(--paper-200, #F0EEE6);
+  border-radius: 999px;
+  padding: 1px 7px;
+  font-size: 10px;
+  color: var(--ink-500, #5C5C58);
+}
+
+.sidebar__empty {
+  font-size: 12px;
+  color: var(--ink-500, #5C5C58);
+  padding: 6px 2px;
+  line-height: 1.45;
+  font-style: italic;
+}
+
+.sidebar__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+
+.sidebar__chip {
+  position: relative;
+  background: var(--paper-50, #FAF9F5);
+  border: 1px solid var(--paper-300, #E8E6DD);
+  border-left: 3px solid var(--accent, #487d74);
+  border-radius: 8px;
+  transition: border-color 180ms, transform 180ms, box-shadow 180ms;
+}
+.sidebar__chip:hover {
+  border-color: var(--paper-400, #D7D7D5);
+  box-shadow: 0 2px 8px rgba(20,20,19,.05);
+  transform: translateY(-1px);
+}
+.sidebar__chip--med { border-left-color: var(--color-foreground-warning, #deb900); }
+.sidebar__chip--high { border-left-color: var(--color-foreground-danger, #d91c1c); }
+
+.sidebar__chip-btn {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  padding: 10px 30px 10px 12px;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sidebar__chip-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--ink-500, #5C5C58);
+  font-family: var(--font-plex-mono, ui-monospace, monospace);
+  letter-spacing: 0.04em;
+}
+.sidebar__chip-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent, #487d74); flex-shrink: 0; }
+.sidebar__chip-dot--med { background: var(--color-foreground-warning, #deb900); }
+.sidebar__chip-dot--high { background: var(--color-foreground-danger, #d91c1c); }
+.sidebar__chip-sev { text-transform: uppercase; }
+.sidebar__chip-time { margin-left: auto; font-variant-numeric: tabular-nums; }
+.sidebar__chip-headline {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-900, #141413);
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+}
+.sidebar__chip-foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+.sidebar__chip-arrow {
+  margin-left: auto;
+  color: var(--ink-500, #5C5C58);
+  transition: transform 180ms, color 180ms;
+}
+.sidebar__chip:hover .sidebar__chip-arrow {
+  color: var(--accent, #487d74);
+  transform: translateX(2px);
+}
+.sidebar__chip-dismiss {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: transparent;
+  border: 0;
+  color: var(--ink-500, #5C5C58);
+  cursor: pointer;
+  padding: 2px 6px;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 180ms, color 180ms, background 180ms;
+}
+.sidebar__chip:hover .sidebar__chip-dismiss { opacity: 1; }
+.sidebar__chip-dismiss:hover { color: var(--ink-900, #141413); background: var(--paper-200, #F0EEE6); }

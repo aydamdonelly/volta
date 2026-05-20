@@ -1,0 +1,79 @@
+/* ===== Spawn animation =====
+   NOTE: keyframes must NOT touch `transform` — RGL controls positioning via
+   `transform: translate(...)` on the same element. Use opacity + filter only.
+*/
+.window-spawn {
+  animation: window-spawn-in 320ms cubic-bezier(.23,1,.32,1) both;
+  height: 100%;
+}
+@keyframes window-spawn-in {
+  from { opacity: 0; filter: blur(2px); }
+  to   { opacity: 1; filter: blur(0); }
+}
+
+/* ===== Empty canvas pulse (existing — refined) ===== */
+@keyframes ecg-pulse {
+  0%, 100% { transform: scale(1); }
+  40% { transform: scale(1.025); }
+  50% { transform: scale(1.04); }
+  60% { transform: scale(1.025); }
+}
+
+.empty-canvas {
+  animation: empty-fade-in 320ms cubic-bezier(.23,1,.32,1);
+}
+.empty-canvas.leaving {
+  animation: empty-fade-out 220ms cubic-bezier(.4,0,1,1) forwards;
+}
+@keyframes empty-fade-in {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes empty-fade-out {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.98); }
+}
+
+/* ===== Typewriter ===== */
+.typewriter {
+  position: relative;
+  white-space: pre-wrap;
+}
+.typewriter::after {
+  content: "▊";
+  color: var(--accent, #487d74);
+  margin-left: 1px;
+  animation: typewriter-cursor 800ms steps(1) infinite;
+  font-size: 0.85em;
+  line-height: 1;
+}
+.typewriter--done::after { content: ""; }
+@keyframes typewriter-cursor {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* ===== Window card lift (extends existing) ===== */
+.window-card { transition: box-shadow 220ms cubic-bezier(.23,1,.32,1), transform 220ms cubic-bezier(.23,1,.32,1); }
+.window-card:hover { box-shadow: 0 16px 40px rgba(72,125,116,.10), 0 4px 12px rgba(0,0,0,.04); transform: translateY(-2px); }
+
+/* ===== Counter / Text body fade-in when body fills ===== */
+.body-fade-in {
+  animation: body-fade-in 320ms cubic-bezier(.23,1,.32,1);
+}
+@keyframes body-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Reduced motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .window-spawn, .typewriter, .body-fade-in, .empty-canvas { animation: none; }
+  .typewriter::after { display: none; }
+  .window-card:hover { transform: none; }
+}
+
+/* ===== ECG-pulse tinted ember (for empty-canvas logo) ===== */
+.empty-canvas__logo {
+  filter: saturate(0.85) sepia(0.05);   /* warms the teal logo against paper bg */
+}

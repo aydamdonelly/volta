@@ -1,0 +1,383 @@
+/* ===================================================================
+   Claude-Code paper aesthetic, layered on top of Wave tokens.
+   Loaded AFTER wave-tokens.css; selectively overrides surface colors,
+   border-radii, shadows, and adds Claude-specific patterns.
+   =================================================================== */
+
+/* ----- 1. Warm paper neutrals (Anthropic-derived) ----- */
+:root {
+  --paper-50:  #FAF9F5;
+  --paper-100: #F4F3EE;
+  --paper-200: #F0EEE6;   /* the famous Anthropic page tone */
+  --paper-300: #E8E6DD;
+  --paper-400: #D7D7D5;
+
+  --ink-900: #141413;
+  --ink-700: #2A2A28;
+  --ink-500: #5C5C58;
+  --ink-300: #8C8C88;
+
+  --ember:   #B8794A;       /* warm clay, replaces Anthropic orange — sparkle ONLY */
+  --ember-soft: rgba(184,121,74,.10);
+
+  /* Override Wave alias tokens to point at paper system (warm, not green-tinted) */
+  --app-bg:    var(--paper-200);
+  --surface:   var(--paper-50);
+  --surface-2: var(--paper-100);
+  --text:      var(--ink-900);
+  --text-muted:var(--ink-500);
+  --border:    var(--paper-300);
+
+  /* Keep Wave teal as THE accent */
+  --accent:      #487d74;
+  --accent-ink:  #2F5751;
+  --accent-soft: #DCEDE9;
+  --accent-text: #1e4a42;
+
+  /* Claude-style radii (square cards, rounded buttons, full pills) */
+  --radius-card: 4px;
+  --radius-btn:  10px;
+  --radius-pill: 9999px;
+
+  /* Optional editorial serif (set up the variable; layout.tsx may wire IBM Plex Serif later) */
+  --font-serif: var(--font-plex-serif, Georgia, "IBM Plex Serif", "Times New Roman", serif);
+
+  /* Semantic colors + text-tier opacity ramp (Agent V depth layer) */
+  --up: #1e957f;
+  --down: #C0532A;
+  --warn: var(--ember, #B8794A);
+  --txt-1: var(--ink-900, #141413);
+  --txt-2: rgba(20, 20, 19, 0.72);
+  --txt-3: rgba(20, 20, 19, 0.55);
+  --txt-4: rgba(20, 20, 19, 0.32);
+}
+
+/* ----- 2. Global typographic tightening ----- */
+body {
+  background: var(--paper-200);
+  color: var(--ink-900);
+  font-feature-settings: "ss01", "tnum";
+}
+h1,h2,h3,h4 {
+  letter-spacing: -0.015em;
+}
+.display { font-weight: 600; letter-spacing: -0.022em; }
+
+/* ----- 3. Card system: paper-on-paper, NO shadow, 1px border, 4px radius ----- */
+.window-card {
+  background: linear-gradient(180deg, var(--paper-50, #FAF9F5) 0%, #F7F6F1 100%) !important;
+  border: 1px solid var(--paper-300, #E5E4E0) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 1px 2px rgba(20, 20, 19, 0.04),
+    0 0 0 1px rgba(20, 20, 19, 0.02) !important;
+  border-radius: var(--radius-card, 8px) !important;
+  transition: box-shadow 200ms cubic-bezier(0.2, 0.8, 0.3, 1), transform 200ms;
+}
+.window-card:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 2px 8px rgba(20, 20, 19, 0.07),
+    0 0 0 1px rgba(20, 20, 19, 0.03) !important;
+}
+
+/* ----- 3a. Thinking-mode card (skeleton for pending LLM) ----- */
+.window-card--thinking {
+  background: linear-gradient(180deg, var(--paper-50, #FAF9F5) 0%, #F4F2EC 100%) !important;
+  min-height: 56px;
+}
+.window-card--thinking .window-card__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.window-card--thinking .window-card__title svg {
+  animation: sparkle-pulse 1.8s ease-in-out infinite;
+  color: var(--accent, #487d74);
+}
+@keyframes sparkle-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50%      { opacity: 1.0; transform: scale(1.05); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .window-card--thinking .window-card__title svg { animation: none; opacity: 0.7; }
+}
+
+/* ----- 3b. Semantic number coloring (up/down/warn) ----- */
+.num--up   { color: var(--up); font-variant-numeric: tabular-nums; font-weight: 550; }
+.num--down { color: var(--down); font-variant-numeric: tabular-nums; font-weight: 550; }
+.num--warn { color: var(--warn); font-variant-numeric: tabular-nums; font-weight: 550; }
+
+/* ----- 3c. Text hierarchy ----- */
+.text-secondary { color: var(--txt-2); }
+.text-tertiary  { color: var(--txt-3); }
+.text-disabled  { color: var(--txt-4); }
+.window-card__header {
+  background: transparent !important;            /* paper-on-paper */
+  border-bottom: 1px solid var(--paper-300) !important;
+}
+/* Kill the chunky 3px left stripes — Claude Code uses 2px or none */
+.window-card--text,
+.window-card--news,
+.window-card--counter {
+  border-left-width: 1px !important;
+  border-left-color: var(--paper-300) !important;
+}
+
+/* ----- 4. Buttons: 10px radius, square type, paper feel ----- */
+.btn {
+  border-radius: var(--radius-btn) !important;
+  box-shadow: none !important;
+  background: var(--ink-900) !important;
+  color: var(--paper-50) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.005em;
+  border: 1px solid var(--ink-900) !important;
+}
+.btn:hover { background: var(--ink-700) !important; border-color: var(--ink-700) !important; }
+.btn--outline {
+  background: transparent !important;
+  color: var(--ink-900) !important;
+  border: 1px solid var(--paper-400) !important;
+}
+.btn--outline:hover {
+  background: var(--paper-100) !important;
+  border-color: var(--ink-700) !important;
+}
+.btn--ghost {
+  background: transparent !important;
+  color: var(--ink-700) !important;
+  border: 1px solid transparent !important;
+}
+.btn--ghost:hover { background: var(--paper-100) !important; color: var(--ink-900) !important; }
+
+/* ----- 5. App-shell header: no border-bottom, paper-on-paper ----- */
+.app-shell { background: var(--paper-200) !important; }
+.app-shell__header {
+  background: transparent !important;
+  border-bottom: 1px solid var(--paper-300) !important;
+}
+.app-shell__brand h1 {
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+.app-shell__brand small {
+  color: var(--ink-500);
+  font-family: var(--font-plex-mono, ui-monospace, monospace);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ----- 6. Labels (chips) — Claude pill-ish ----- */
+.label {
+  border-radius: var(--radius-pill) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.01em;
+  padding: 3px 9px !important;
+  border: 1px solid var(--paper-300);
+  background: var(--paper-100);
+  color: var(--ink-700);
+}
+.label--info-subtle    { background: var(--accent-soft); color: var(--accent-ink); border-color: transparent; }
+.label--warning-subtle { background: var(--ember-soft); color: var(--ember); border-color: transparent; }
+.label--neutral        { background: var(--paper-100); color: var(--ink-500); }
+
+/* ----- 7. The sparkle thinking glyph ----- */
+@keyframes claude-sparkle {
+  0%, 14%   { content: "·"; }
+  14%, 28%  { content: "✻"; }
+  28%, 42%  { content: "✽"; }
+  42%, 56%  { content: "✶"; }
+  56%, 70%  { content: "✳"; }
+  70%, 100% { content: "✢"; }
+}
+.sparkle::before {
+  content: "·";
+  display: inline-block;
+  width: 1em;
+  text-align: center;
+  font-family: var(--font-plex-mono, ui-monospace, monospace);
+  color: var(--ember);
+  animation: claude-sparkle 1.2s steps(6, end) infinite;
+  margin-right: 0.4ch;
+  font-size: 1.05em;
+  line-height: 1;
+}
+.sparkle--teal::before { color: var(--accent); }
+
+/* ----- 8. Tool-call lines (▸ / ↳ mono pattern) ----- */
+.tool-call {
+  font-family: var(--font-plex-mono, ui-monospace, monospace);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-700);
+  padding: 4px 0 4px 12px;
+  border-left: 2px solid var(--paper-300);
+  margin: 2px 0;
+  letter-spacing: 0.005em;
+}
+.tool-call::before { content: "▸ "; color: var(--ink-500); }
+.tool-result::before { content: "↳ "; color: var(--accent); }
+.tool-call .arg { color: var(--ember); }
+.tool-call .key { color: var(--ink-500); }
+
+/* ----- 9. Section "kicker" — mono UPPERCASE small label (Claude PLAN-style) ----- */
+.kicker {
+  font-family: var(--font-plex-mono, ui-monospace, monospace);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+/* ----- 10. Streaming text cursor (block, pulsing) ----- */
+.streaming::after {
+  content: "";
+  display: inline-block;
+  width: 0.5ch;
+  height: 1em;
+  background: var(--ink-900);
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  animation: stream-pulse 1.05s ease-in-out infinite;
+}
+@keyframes stream-pulse { 50% { opacity: 0.15; } }
+.streaming--done::after { display: none; }
+
+/* ----- 11. Editorial serif block (for "Plan"-style prose) ----- */
+.editorial {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink-900);
+  letter-spacing: 0;
+}
+
+/* ----- 12. Theme-section header (Claude editorial) ----- */
+.theme-section__header { margin-bottom: 20px !important; }
+.theme-section__title {
+  font-weight: 600 !important;
+  letter-spacing: -0.018em;
+  font-size: 22px !important;
+  color: var(--ink-900) !important;
+}
+.theme-section__kicker {
+  font-family: var(--font-plex-mono, ui-monospace, monospace) !important;
+  font-size: 11px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-500) !important;
+  margin-left: 12px;
+}
+
+/* ----- 13. ClockBar / TemplateBar refresh ----- */
+.clock-bar__time {
+  font-variant-numeric: tabular-nums !important;
+  color: var(--ink-900) !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+
+/* ----- 14. Modal — paper, not glass ----- */
+.modal {
+  background: var(--paper-50) !important;
+  border: 1px solid var(--paper-300) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 18px 50px rgba(20,20,19,.10) !important;
+}
+.modal-backdrop {
+  background: rgba(20,20,19,.18) !important;
+}
+.data-table th {
+  background: var(--paper-100) !important;
+  color: var(--ink-700) !important;
+  font-size: 11px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+.data-table td { color: var(--ink-900) !important; }
+
+/* ----- 15. Empty canvas: less ECG-pulse, more print-stillness ----- */
+.empty-canvas h2 {
+  font-weight: 600 !important;
+  letter-spacing: -0.022em !important;
+  font-size: 36px !important;
+  color: var(--ink-900) !important;
+}
+.empty-canvas p {
+  color: var(--ink-500) !important;
+  font-size: 16px !important;
+  line-height: 1.55;
+}
+.empty-canvas__suggestions button {
+  border-radius: var(--radius-btn) !important;
+  border: 1px solid var(--paper-300) !important;
+  border-style: solid !important;
+  background: var(--paper-50) !important;
+  color: var(--ink-900) !important;
+  padding: 12px 18px !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  transition: border-color 180ms, background 180ms;
+}
+.empty-canvas__suggestions button:hover {
+  background: var(--paper-100) !important;
+  border-color: var(--accent) !important;
+}
+
+/* ----- 16. Reasoning bar: paper + sparkle, no spinner border ----- */
+.reasoning-bar {
+  background: var(--paper-100) !important;
+  border-bottom: 1px solid var(--paper-300) !important;
+  color: var(--ink-700) !important;
+}
+.reasoning-bar__stage {
+  background: transparent !important;
+  color: var(--ink-500) !important;
+  font-family: var(--font-plex-mono, ui-monospace, monospace) !important;
+  font-size: 11px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0 !important;
+}
+.reasoning-bar__message {
+  color: var(--ink-900) !important;
+}
+
+/* ----- 17. News-toasts paper ----- */
+.toast {
+  background: var(--paper-50) !important;
+  border: 1px solid var(--paper-300) !important;
+  border-left-width: 3px !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: 0 2px 8px rgba(20,20,19,.06) !important;
+}
+.toast__progress { background: var(--accent) !important; }
+
+/* ----- 18. Voice-dot paper ----- */
+.voice-dot {
+  background: var(--paper-50) !important;
+  border: 1px solid var(--paper-300) !important;
+  border-radius: var(--radius-pill) !important;
+  box-shadow: 0 2px 12px rgba(20,20,19,.06) !important;
+}
+.voice-dot--expanded {
+  box-shadow: 0 8px 28px rgba(20,20,19,.10) !important;
+}
+.voice-dot__mic {
+  background: var(--ink-900) !important;
+  border-radius: var(--radius-pill) !important;
+}
+.voice-dot__mic--listening {
+  background: var(--ember) !important;
+}
+
+/* ----- 19. News-ticker (if still rendered anywhere) ----- */
+.news-ticker {
+  background: var(--paper-100) !important;
+  border-bottom: 1px solid var(--paper-300) !important;
+}

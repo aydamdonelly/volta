@@ -1,0 +1,86 @@
+/* ===================================================================
+   Narration typography — for Sonnet-generated prose in text/counter
+   windows. Per R6 typography research (Baymard, Pimp my Type,
+   MDN <cite>, AI Elements InlineCitation).
+   =================================================================== */
+
+.narration {
+  max-width: 64ch;                                         /* ~60 CPL */
+  font-family: var(--font-plex-sans, "IBM Plex Sans"), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.58;
+  color: var(--ink-900, #141413);
+  letter-spacing: 0.005em;
+  font-feature-settings: "kern", "liga", "calt", "ss01";
+  font-variant-numeric: proportional-nums;
+}
+.narration p {
+  margin: 0 0 10px 0;
+}
+.narration p:last-child { margin-bottom: 0; }
+
+/* First paragraph's first line — subtle lead emphasis (no drop cap) */
+.narration p:first-of-type::first-line {
+  font-weight: 500;
+  color: var(--ink-900, #141413);
+}
+
+/* Inline citation — replaces the old <code> mono chip */
+.narration cite {
+  font-style: normal;
+  font-family: inherit;
+  font-size: 0.82em;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--ink-500, #5C5C58);
+  white-space: nowrap;
+  vertical-align: 0.05em;
+  padding: 0 0.15em;
+  cursor: help;
+  transition: color 120ms;
+}
+.narration cite::before {
+  content: "·\00a0";
+  opacity: 0.55;
+}
+.narration cite:hover {
+  color: var(--ink-700, #2A2A28);
+}
+
+/* Number tokens (€-prices, MWh values) — tabular within token, proportional in prose */
+.narration .num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum", "ss01";
+  font-weight: 550;
+  color: var(--ink-900, #141413);
+  white-space: nowrap;
+}
+.narration .num--neg {
+  color: var(--accent-text, #1e4a42);
+}
+
+.narration strong {
+  font-weight: 600;
+  color: var(--ink-900, #141413);
+}
+.narration code:not(cite) {
+  background: var(--paper-100, #F4F3EE);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: var(--font-plex-mono, ui-monospace, monospace);
+}
+
+/* Streaming cursor — only when WS pending */
+.narration.is-streaming p:last-child::after {
+  content: "▍";
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--accent, #487d74);
+  animation: narration-caret-blink 1.05s steps(2) infinite;
+}
+@keyframes narration-caret-blink { 50% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .narration.is-streaming p:last-child::after { animation: none; }
+}

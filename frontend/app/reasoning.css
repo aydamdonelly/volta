@@ -1,0 +1,46 @@
+.reasoning-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background: var(--surface, #ffffff);
+  border-bottom: 1px solid var(--border, #e2ebe9);
+  font-size: var(--type-zeta, 14px);
+  color: var(--text-muted, #5d7570);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 260ms cubic-bezier(.23,1,.32,1), max-height 320ms cubic-bezier(.23,1,.32,1);
+}
+.reasoning-bar.is-visible {
+  opacity: 1;
+  max-height: 60px;
+}
+.reasoning-bar__spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--border, #e2ebe9);
+  border-top-color: var(--accent, #487d74);
+  border-radius: 50%;
+  animation: reasoning-spin 0.9s linear infinite;
+  flex-shrink: 0;
+}
+.reasoning-bar__stage {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: var(--type-eta, 12px);
+  color: var(--accent-text, #1e4a42);
+  text-transform: lowercase;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  background: var(--color-background-accent-subtle, #eefffc);
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+.reasoning-bar__message {
+  color: var(--text, #162b27);
+}
+@keyframes reasoning-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .reasoning-bar { transition: none; }
+  .reasoning-bar__spinner { animation: none; border-top-color: transparent; }
+}

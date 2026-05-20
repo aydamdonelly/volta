@@ -1,0 +1,143 @@
+.cite-chip-wrap {
+  position: relative;
+  display: inline;
+}
+
+.cite-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 1px;
+  padding: 1px 7px 2px;
+  border: 1px solid var(--paper-300, #E8E6DD);
+  border-radius: 999px;
+  background: var(--paper-50, #FAF9F5);
+  font-family: var(--font-plex-sans, "IBM Plex Sans"), system-ui, sans-serif;
+  font-size: 0.78em;
+  line-height: 1.4;
+  vertical-align: baseline;
+  color: var(--ink-700, #2A2A28);
+  cursor: pointer;
+  transition: background 80ms ease, border-color 80ms ease, transform 80ms ease;
+  white-space: nowrap;
+}
+.cite-chip:hover,
+.cite-chip:focus-visible {
+  background: var(--paper-100, #F4F3EE);
+  border-color: var(--accent, #487d74);
+  outline: none;
+}
+.cite-chip:focus-visible {
+  box-shadow: 0 0 0 2px var(--accent-soft, #DCEDE9);
+}
+.cite-chip:active { transform: translateY(0.5px); }
+
+.cite-chip__num {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-500, #5C5C58);
+  font-size: 0.92em;
+}
+.cite-chip__val {
+  font-weight: 550;
+  color: var(--ink-900, #141413);
+  font-variant-numeric: tabular-nums;
+}
+.cite-chip__glyph {
+  display: inline-block;
+}
+.cite-chip[data-status="ok"]      .cite-chip__glyph { color: var(--accent, #487d74); }
+.cite-chip[data-status="stale"]   .cite-chip__glyph { color: var(--ember, #B8794A); }
+.cite-chip[data-status="missing"] .cite-chip__glyph { color: var(--color-foreground-danger, #d91c1c); }
+.cite-chip[data-status="derived"] .cite-chip__glyph { color: var(--ink-500, #5C5C58); }
+
+/* Hover popover */
+.cite-pop {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  width: 320px;
+  padding: 12px 14px 10px;
+  border: 1px solid var(--paper-300, #E8E6DD);
+  border-radius: 8px;
+  background: var(--paper-50, #FAF9F5);
+  box-shadow: 0 12px 32px -8px rgba(20,20,19,.18), 0 2px 6px -2px rgba(20,20,19,.08);
+  font-family: var(--font-plex-sans, "IBM Plex Sans"), system-ui, sans-serif;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--ink-700, #2A2A28);
+  z-index: 50;
+  display: block;
+  animation: cite-pop-in 160ms cubic-bezier(.23,1,.32,1);
+}
+@keyframes cite-pop-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.cite-pop__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.cite-pop__n {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-plex-mono, ui-monospace, monospace);
+  color: var(--ink-500, #5C5C58);
+  font-size: 12px;
+}
+.cite-pop__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+.cite-pop__badge--ok      { background: var(--accent-soft, #DCEDE9); color: var(--accent-text, #1e4a42); }
+.cite-pop__badge--stale   { background: rgba(184,121,74,.10); color: var(--ember, #B8794A); }
+.cite-pop__badge--missing { background: var(--color-background-danger-subtle, #ffe8e0); color: var(--color-foreground-danger, #d91c1c); }
+.cite-pop__badge--derived { background: var(--paper-200, #F0EEE6); color: var(--ink-500, #5C5C58); }
+
+.cite-pop__value {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--ink-900, #141413);
+  display: block;
+  margin: 2px 0 8px;
+}
+.cite-pop__unit {
+  font-size: 13px;
+  color: var(--ink-500, #5C5C58);
+  font-weight: 500;
+}
+
+.cite-pop__grid {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  row-gap: 4px;
+  column-gap: 10px;
+  margin: 6px 0;
+  font-size: 11.5px;
+}
+.cite-pop__grid dt { color: var(--ink-500, #5C5C58); }
+.cite-pop__grid dd { color: var(--ink-900, #141413); margin: 0; }
+.cite-pop__grid .mono { font-family: var(--font-plex-mono, ui-monospace, monospace); font-size: 11px; }
+.cite-pop__grid .ok { color: var(--accent, #487d74); }
+.cite-pop__grid .warn { color: var(--color-foreground-danger, #d91c1c); }
+
+.cite-pop__hint {
+  display: block;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid var(--paper-300, #E8E6DD);
+  font-size: 11px;
+  color: var(--ink-500, #5C5C58);
+  font-style: italic;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cite-pop { animation: none; }
+}

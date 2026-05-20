@@ -1,0 +1,161 @@
+/* ============================================================================
+ * wave-tokens.css — Volue "Wave" Design System, ported to plain CSS variables
+ * Source of truth (public, no auth): @volue/design-{colors,typography,sizing,
+ * elevation} on npm/unpkg, verified byte-exact 2026-05-19. Light theme only
+ * (Wave ships no dark mode). Drop this in globally, BEFORE app CSS.
+ *
+ *   import "./wave-tokens.css"   // in frontend/app/layout.tsx (top of file)
+ *
+ * Wave's own token names are preserved (--color-*, --size-*, --elevation-*)
+ * so this IS the upstream contract; Volta-friendly aliases added at the end.
+ * ========================================================================== */
+
+:root {
+  /* ---- CORE PRIMITIVES (rarely used directly; prefer functional below) --- */
+  --color-core-brand: #ff5f00;            /* LOGO / meta theme-color ONLY. Never a UI accent. */
+  --color-white: #ffffff;
+  --color-gray-5:  #f8fcfb;  --color-gray-10: #f2f9f8;  --color-gray-20: #e2ebe9;
+  --color-gray-30: #c4d0cd;  --color-gray-40: #a2b2af;  --color-gray-50: #889e99;
+  --color-gray-60: #5d7570;  --color-gray-70: #475e59;  --color-gray-80: #2e4540;
+  --color-gray-90: #162b27;  --color-gray-100:#091a16;
+  /* SolarMist = the real Volue product accent (mint/teal), NOT the orange */
+  --color-solarmist-20:#eefffc; --color-solarmist-30:#e3fffa; --color-solarmist-40:#d1fff7;
+  --color-solarmist-50:#b8fdf1; --color-solarmist-60:#9fe3d7; --color-solarmist-70:#7ebdb2;
+  --color-solarmist-80:#487d74; --color-solarmist-90:#32635b; --color-solarmist-100:#1e4a42;
+
+  /* ---- FUNCTIONAL / SEMANTIC (USE THESE) -------------------------------- */
+  /* Backgrounds / surfaces (note: neutrals are GREEN-TINTED — the Volue tell) */
+  --color-background-neutral-minimal: #ffffff;  /* app / window body          */
+  --color-background-neutral-subtle:  #f8fcfb;  /* page / canvas backdrop     */
+  --color-background-neutral-moderate: #f2f9f8; /* hover row / inset          */
+  --color-background-neutral:         #e2ebe9;  /* filled chip / track        */
+  --color-background-neutral-bold:    #5d7570;
+  --color-background-neutral-strong:  #2e4540;  /* primary btn / dark panel   */
+  --color-background-neutral-strong-hover:  #162b27;
+  --color-background-neutral-strong-active: #091a16;
+  --color-background-neutral-contrast: #091a16; /* tooltip bg                 */
+  --color-background-accent-subtle:   #eefffc;
+  --color-background-accent:          #e3fffa;
+  --color-background-accent-hover:    #d1fff7;
+  --color-background-accent-bold:     #9fe3d7;   /* == focus ring color       */
+  --color-background-accent-strong:   #487d74;
+  --color-background-disabled:        #e2ebe9;
+  --color-background-disabled-subtle: #f2f9f8;
+  /* Foreground / text */
+  --color-foreground-neutral:         #162b27;   /* primary text              */
+  --color-foreground-neutral-moderate:#2e4540;
+  --color-foreground-neutral-subtle:  #5d7570;   /* secondary / captions      */
+  --color-foreground-neutral-minimal: #a2b2af;   /* placeholder / disabled    */
+  --color-foreground-accent:          #1e4a42;
+  --color-foreground-accent-moderate: #32635b;   /* link hover                */
+  --color-foreground-accent-subtle:   #487d74;
+  --color-foreground-inverse:         #ffffff;
+  /* Borders */
+  --color-border-neutral-subtle:   #e2ebe9;      /* default card/input border */
+  --color-border-neutral-moderate: #c4d0cd;
+  --color-border-neutral:          #a2b2af;      /* input resting border      */
+  --color-border-neutral-bold:     #475e59;
+  --color-border-neutral-contrast: #091a16;
+  --color-border-accent-bold:      #487d74;      /* input hover / focus edge  */
+  /* Status — success / danger / warning / info (bold = solid, subtle = bg) */
+  --color-success-strong: #008928;  --color-success-bold: #009842;
+  --color-success-subtle-bg: #dfffe5;  --color-success-border: #77c588;
+  --color-danger-strong: #d91c1c;   --color-danger-bold: #e4433a;
+  --color-danger-strong-hover: #a50000;  --color-danger-fg: #660000;
+  --color-danger-subtle-bg: #ffe8e0;  --color-danger-border: #ffa699;
+  --color-warning-strong: #deb900;  --color-warning-bold: #ffd000;
+  --color-warning-subtle-bg: #fffbe8;
+  --color-info-strong: #00769e;     --color-info-bold: #009cd0;
+  --color-info-subtle-bg: #e0f7ff;
+  /* Focus ring (Wave signature — used by ALL interactive elements) */
+  --focus-ring:        0 0 0 3px #9fe3d7;
+  --focus-ring-danger: 0 0 0 3px #ffa699;
+
+  /* ---- DATA-VISUALISATION SERIES (Recharts) -----------------------------
+   * Wave strips these from the public package (sentinels); reconstructed
+   * byte-exact from core.json primitives @ tone-70 (Wave's chart tone),
+   * in Wave's documented "Secondary colors" order. aqua/green/yellow/red
+   * are RESERVED semantic — never use them as series colors.            */
+  --chart-1:#1e957f; /* teal   */  --chart-2:#9d46f0; /* purple */
+  --chart-3:#f0218b; /* pink   */  --chart-4:#3875f6; /* blue   */
+  --chart-5:#725cff; /* lazuli */  --chart-6:#559517; /* lime   */
+  --chart-7:#f5893e; /* orange */  --chart-8:#b3c83c; /* pear   */
+  --chart-9:#a8733f; /* brown  */
+  --chart-grid:   #e2ebe9;   /* gridlines        */
+  --chart-axis:   #c4d0cd;   /* axis line        */
+  --chart-tick:   #5d7570;   /* tick labels      */
+  --chart-refline:#a2b2af;   /* reference lines  */
+
+  /* ---- TYPOGRAPHY (@volue/design-typography 0.4.0) ---------------------- */
+  --font-family-base: 'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Arial, 'Noto Sans', sans-serif;
+  --font-family-mono: 'IBM Plex Mono', ui-monospace, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+  --font-weight-normal: 400;       /* all body text                          */
+  --font-weight-semibold: 600;     /* ALL headings/titles (Wave has no 700)   */
+  /* Type scale (Greek names; size / line-height). Headlines are weight 600. */
+  --type-giga:    51px;  --type-giga-lh:    1.411765;  /* hero number        */
+  --type-alpha:   38px;  --type-alpha-lh:   1.263158;  /* h1                 */
+  --type-beta:    28px;  --type-beta-lh:    1.714286;  /* h2                 */
+  --type-gamma:   21px;  --type-gamma-lh:   1.52381;   /* h3 / app title     */
+  --type-delta:   19px;  --type-delta-lh:   1.263158;  /* h4                 */
+  --type-eps:     16px;  --type-eps-lh:     1.5rem;    /* body / window title*/
+  --type-zeta:    14px;  --type-zeta-lh:    1.25rem;   /* small / table body */
+  --type-eta:     12px;  --type-eta-lh:     1.125rem;  /* caption / label    */
+
+  /* ---- SPACING / RADIUS / CONTROL (@volue/design-sizing 0.3.14) --------- */
+  --space-xs: .25rem;  --space-s: .5rem;  --space-m: 1rem;  --space-l: 1.5rem;
+  --space-xl: 2rem;    --space-xxl: 3rem; --space-xxxl: 4.5rem;
+  --radius-xs:.25rem;  --radius-s:.375rem;  --radius-m:.5rem;
+  --radius-l:.75rem;   --radius-xl:1rem;    --radius-full:100vh;
+  --control-sm-height: 1.75rem;  --control-sm-pad: .5rem;  --control-sm-radius:.25rem;
+  --control-md-height: 2.5rem;   --control-md-pad: .75rem; --control-md-radius:.375rem;
+
+  /* ---- ELEVATION (@volue/design-elevation 1.1.0; green-tinted) ----------
+   * Default Wave surface is FLAT. Use shadow only on floating layers.     */
+  --shadow-color: 166, 48%, 7%;
+  --elevation-xs: 0 1px 2.5px hsla(var(--shadow-color),.08), 0 3px 9px hsla(var(--shadow-color),.048);
+  --elevation-s:  0 .4px 2.2px hsla(var(--shadow-color),.022), 0 1.4px 5px hsla(var(--shadow-color),.04), 0 5px 14px hsla(var(--shadow-color),.06);
+  --elevation-m:  0 .3px 2px hsla(var(--shadow-color),.015), 0 1.5px 8px hsla(var(--shadow-color),.024), 0 4px 16px hsla(var(--shadow-color),.04), 0 8px 24px hsla(var(--shadow-color),.07);
+  --elevation-l:  0 .7px 2px hsla(var(--shadow-color),.015), 0 1.6px 8px hsla(var(--shadow-color),.024), 0 3.3px 16px hsla(var(--shadow-color),.034), 0 5px 26px hsla(var(--shadow-color),.06), 0 12px 42px hsla(var(--shadow-color),.08);
+
+  /* ---- MOTION (Wave ships no tokens; these match its component curves) -- */
+  --motion-fast: 150ms;  --motion-base: 220ms;  --motion-slow: 320ms;
+  --ease-standard: cubic-bezier(.4,0,.2,1);
+  --ease-collapse-open:  cubic-bezier(.9,.1,1,0);   /* Wave Collapsible open  */
+  --ease-collapse-close: cubic-bezier(.1,.9,0,1);   /* Wave Collapsible close */
+  --ease-emphasized:     cubic-bezier(.23,1,.32,1); /* chevron / drawer       */
+  --scrim: rgba(72,125,116,.15);                    /* Wave dialog scrim      */
+
+  /* ---- VOLTA-FRIENDLY ALIASES (semantic names for app components) ------- */
+  --app-bg:        var(--color-background-neutral-subtle);   /* canvas       */
+  --surface:       var(--color-background-neutral-minimal);  /* window body  */
+  --surface-2:     var(--color-background-neutral-moderate); /* nested/hover */
+  --text:          var(--color-foreground-neutral);
+  --text-muted:    var(--color-foreground-neutral-subtle);
+  --border:        var(--color-border-neutral-subtle);
+  --accent:        var(--color-background-accent-strong);    /* #487d74      */
+  --accent-text:   var(--color-foreground-accent);           /* #1e4a42      */
+  --up:            var(--color-success-strong);              /* price ↑      */
+  --down:          var(--color-danger-strong);               /* price ↓      */
+}
+
+/* Sensible global defaults so the app reads as Wave even before components
+   are individually styled (pure low-hanging fruit). */
+html, body {
+  background: var(--app-bg);
+  color: var(--text);
+  font-family: var(--font-family-base);
+  font-size: var(--type-eps);
+  line-height: var(--type-eps-lh);
+  font-weight: var(--font-weight-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+h1,h2,h3,h4,h5,h6 { font-weight: var(--font-weight-semibold); margin: 0; }
+*, *::before, *::after { box-sizing: border-box; }
+:where(button, [role="button"], a, input, select, textarea):focus-visible {
+  outline: none; box-shadow: var(--focus-ring);
+}
+.tabular-nums { font-variant-numeric: tabular-nums; }  /* all numeric/price readouts */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

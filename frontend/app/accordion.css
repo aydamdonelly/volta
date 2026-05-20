@@ -1,0 +1,62 @@
+.window-card__toggle {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+  text-align: left;
+  /* override existing window-card__header styling within the toggle */
+}
+.window-card__toggle:hover { background: var(--paper-100, #F4F3EE); }
+.window-card__toggle:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--accent-soft, #DCEDE9);
+}
+
+/* Accordion body */
+.window-card__body {
+  overflow: hidden;
+  transition: max-height 320ms cubic-bezier(.23,1,.32,1), opacity 220ms cubic-bezier(.23,1,.32,1);
+}
+.window-card__body--open {
+  max-height: 1200px;       /* enough for charts; will not animate further once open */
+  opacity: 1;
+}
+/* Chart cards: give Recharts an explicit pixel height (ResponsiveContainer 100% needs a measurable parent) */
+.window-card--chart .window-card__body--open .window-card__body-inner,
+.window-card--chart .window-card__body--open {
+  min-height: 360px;
+}
+.window-card--chart .window-card__body-inner > div { height: 100%; min-height: 320px; }
+.window-card__body--closed {
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 200ms cubic-bezier(.4,0,.8,.15), opacity 150ms cubic-bezier(.4,0,.8,.15);
+}
+.window-card__body-inner {
+  padding: 14px;
+  min-height: 0;
+}
+
+.window-card--small {
+  /* in collapsed state, no fixed minHeight from the parent grid item;
+     the grid layout itself still gives this card a slot — fine,
+     extra whitespace is OK (theme breathing room) */
+}
+.window-card--big {
+  /* default styling already applies; nothing extra needed */
+}
+
+.window-card__chevron {
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .window-card__body { transition: none; }
+  .window-card__chevron { transition: none; }
+}

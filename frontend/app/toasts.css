@@ -1,0 +1,201 @@
+/* ===================================================================
+   Transient top-right toast notifications (paper aesthetic).
+   Three severities: low (5s TTL, teal), med (8s TTL, ember), high
+   (persist until dismissed, coral + breaking variant).
+   Hover pauses the countdown ring at the bottom of each toast.
+   =================================================================== */
+
+.toast-stack {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  width: auto;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;          /* let clicks pass when no toast */
+}
+
+.toast {
+  pointer-events: auto;
+  position: relative;
+  width: 320px;
+  background: var(--paper-50, #FAF9F5);
+  border: 1px solid var(--paper-300, #E8E6DD);
+  border-left: 3px solid var(--accent, #487d74);
+  border-radius: var(--radius-card, 4px);
+  box-shadow: 0 2px 8px rgba(20,20,19,.06);
+  padding: 12px 14px 14px;
+  text-align: left;
+  font-family: inherit;
+  color: var(--ink-900, #141413);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: hidden;
+  animation: toast-slide-in 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 180ms,
+              border-color 180ms;
+}
+.toast:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(20,20,19,.10);
+}
+
+/* Severity left-border colors */
+.toast--low  { border-left-color: var(--accent, #487d74); }
+.toast--med  { border-left-color: var(--ember, #B8794A); }
+.toast--high { border-left-color: #C44A3A; }    /* coral */
+
+/* Breaking-news variant: wider + pulsing left border */
+.toast--breaking {
+  width: 440px;
+  border-left-width: 5px;
+  animation:
+    toast-slide-in 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    toast-breaking-pulse 1.6s ease-in-out infinite 280ms;
+}
+
+/* Exit animation (applied via .toast--leaving) */
+.toast--leaving {
+  animation: toast-fade-out 200ms ease-out forwards;
+  pointer-events: none;
+}
+
+/* Header row: severity tag + zap icon + timestamp + close */
+.toast__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-family: var(--font-plex-mono, ui-monospace, monospace);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-500, #5C5C58);
+}
+.toast__sev {
+  font-weight: 600;
+}
+.toast__zap {
+  color: var(--ember, #B8794A);
+  flex-shrink: 0;
+}
+.toast__icon {
+  color: var(--ink-500, #5C5C58);
+  flex-shrink: 0;
+}
+.toast--high .toast__icon { color: #C44A3A; }
+.toast--med  .toast__icon { color: var(--ember, #B8794A); }
+.toast__time {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-500, #5C5C58);
+}
+.toast__close {
+  margin-left: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  color: var(--ink-500, #5C5C58);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.toast__close:hover {
+  background: var(--paper-100, #F4F3EE);
+  color: var(--ink-900, #141413);
+}
+
+/* Title + body text */
+.toast__title {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--ink-900, #141413);
+  letter-spacing: -0.005em;
+}
+.toast__body {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-700, #2A2A28);
+}
+.toast__hedge {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--ink-500, #5C5C58);
+  margin-top: 2px;
+}
+
+/* Investigate CTA button */
+.toast__cta {
+  align-self: flex-start;
+  margin-top: 4px;
+  background: var(--accent, #487d74);
+  color: var(--paper-50, #FAF9F5);
+  border: 1px solid var(--accent, #487d74);
+  border-radius: var(--radius-btn, 10px);
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 150ms, border-color 150ms;
+}
+.toast__cta:hover {
+  background: var(--accent-ink, #2F5751);
+  border-color: var(--accent-ink, #2F5751);
+}
+.toast--high .toast__cta {
+  background: #C44A3A;
+  border-color: #C44A3A;
+}
+.toast--high .toast__cta:hover {
+  background: #A03929;
+  border-color: #A03929;
+}
+
+/* Countdown ring at the very bottom of the toast */
+.toast__countdown {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: var(--accent, #487d74);
+  opacity: 0.55;
+  transform-origin: left center;
+  transform: scaleX(var(--toast-progress, 1));
+  transition: transform 200ms linear;
+}
+.toast--med .toast__countdown  { background: var(--ember, #B8794A); }
+.toast--high .toast__countdown { background: #C44A3A; }
+
+/* High severity persists, no countdown */
+.toast--persist .toast__countdown { display: none; }
+
+@keyframes toast-slide-in {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes toast-fade-out {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(16px); }
+}
+@keyframes toast-breaking-pulse {
+  0%, 100% { border-left-color: #C44A3A; }
+  50%      { border-left-color: #ff8b78; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast,
+  .toast--breaking,
+  .toast--leaving {
+    animation: none;
+  }
+  .toast__countdown { transition: none; }
+}
